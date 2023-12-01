@@ -30,7 +30,7 @@ c.DockerSpawner.notebook_dir = notebook_dir
 
 # Mount the real user's Docker volume on the host to the notebook user's
 # notebook directory in the container
-c.DockerSpawner.volumes = {"/jupyterhub/users/{username}": notebook_dir, "/jupyterhub/shared": os.path.join(os.path.dirname(notebook_dir), "shared")}
+c.DockerSpawner.volumes = {"/jupyterhub/users/{username}": notebook_dir, "/jupyterhub/shared": os.path.join(notebook_dir, "shared")}
 
 # Remove containers once they are stopped
 c.DockerSpawner.remove = True
@@ -51,6 +51,9 @@ c.JupyterHub.authenticator_class = "nativeauthenticator.NativeAuthenticator"
 
 # Allow anyone to sign-up without approval
 c.NativeAuthenticator.open_signup = True
+
+# fix Permission denied
+c.NotebookApp.allow_root = True
 
 # Allowed admins
 admin = os.environ.get("JUPYTERHUB_ADMIN")
