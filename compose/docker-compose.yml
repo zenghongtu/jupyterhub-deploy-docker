@@ -31,11 +31,11 @@ services:
       # All containers will join this network
       DOCKER_NETWORK_NAME: jupyterhub-network
       # Notebook directory inside user image
-      DOCKER_NOTEBOOK_DIR: /home/jovyan/work
+      # DOCKER_NOTEBOOK_DIR: /home/jovyan/work
       CONFIGPROXY_AUTH_TOKEN: 08168e511a2547629ae10f4e631c647363833acdb408b8f5be277838e3e1a57f
 
   chp:
-    image: jupyterhub/configurable-http-proxy:4.6.1
+    image: jupyterhub/configurable-http-proxy:4.5
     command: --no-include-prefix
     environment:
       CONFIGPROXY_AUTH_TOKEN: 08168e511a2547629ae10f4e631c647363833acdb408b8f5be277838e3e1a57f

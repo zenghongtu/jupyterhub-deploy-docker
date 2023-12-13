@@ -33,12 +33,12 @@ c.DockerSpawner.network_name = network_name
 # Most `jupyter/docker-stacks` *-notebook images run the Notebook server as
 # user `jovyan`, and set the notebook directory to `/home/jovyan/work`.
 # We follow the same convention.
-notebook_dir = os.environ.get("DOCKER_NOTEBOOK_DIR", "/home/jovyan/work")
+notebook_dir = '/home/coder'
 c.DockerSpawner.notebook_dir = notebook_dir
 
 # Mount the real user's Docker volume on the host to the notebook user's
 # notebook directory in the container
-c.DockerSpawner.volumes = {"/jupyterhub/users/{username}": notebook_dir, "/jupyterhub/shared": os.path.join(notebook_dir, "shared")}
+c.DockerSpawner.volumes = { 'jupyterhub-user-{username}': notebook_dir }
 
 # Remove containers once they are stopped
 c.DockerSpawner.remove = True
@@ -46,9 +46,15 @@ c.DockerSpawner.remove = True
 # For debugging arguments passed to spawned containers
 c.DockerSpawner.debug = True
 
+# The Hub should listen on all interfaces,
+# so user servers can connect
+c.JupyterHub.hub_ip = '0.0.0.0'
+# this is the name of the 'service' in docker-compose.yml
+c.JupyterHub.hub_connect_ip = 'hub'
+
 # User containers will access hub by container name on the Docker network
-c.JupyterHub.hub_ip = "jupyterhub"
-c.JupyterHub.hub_port = 8080
+c.ConfigurableHTTPProxy.should_start = False
+c.ConfigurableHTTPProxy.api_url = 'http://chp:8001'
 
 # Persist hub data on volume mounted inside container
 c.JupyterHub.cookie_secret_file = "/data/jupyterhub_cookie_secret"
