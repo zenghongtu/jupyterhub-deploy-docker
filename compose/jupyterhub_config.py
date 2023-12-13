@@ -14,7 +14,15 @@ c = get_config()  # noqa: F821
 c.JupyterHub.spawner_class = "dockerspawner.DockerSpawner"
 
 # Spawn containers from this image
-c.DockerSpawner.image = os.environ["DOCKER_NOTEBOOK_IMAGE"]
+c.DockerSpawner.image = 'codercom/code-server'
+
+# Have the Spawner override the Docker entrypoint
+c.DockerSpawner.extra_create_kwargs.update({
+  'entrypoint': '/usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8888 --auth none'
+})
+
+# Overwrite cmd
+c.DockerSpawner.cmd = ""
 
 # Connect containers to this Docker network
 network_name = os.environ["DOCKER_NETWORK_NAME"]
